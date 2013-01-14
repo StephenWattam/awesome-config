@@ -13,13 +13,14 @@ theme.bg_normal     = "#111111"
 theme.bg_focus      = "#232d3c"
 theme.bg_urgent     = "#ff6600"
 theme.bg_minimize   = "#444444"
+theme.bg_systray    = theme.bg_normal
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
 
-theme.border_width  = "1"
+theme.border_width  = 1
 theme.border_normal = "#000000"
 theme.border_focus  = "#ddff00"
 --theme.border_focus  = "#535d6c"
@@ -77,8 +78,7 @@ theme.titlebar_maximized_button_focus_inactive  = image_path .. "/titlebar/maxim
 theme.titlebar_maximized_button_normal_active   = image_path .. "/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active    = image_path .. "/titlebar/maximized_focus_active.png"
 
--- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "feh --bg-center \"" .. wallpaper_path .. "\"" }
+theme.wallpaper =  wallpaper_path 
     
 
 -- You can use your own layout icons like this:
@@ -95,7 +95,13 @@ theme.layout_tiletop    = image_path .. "/layouts/tiletopw.png"
 theme.layout_spiral     = image_path .. "/layouts/spiralw.png"
 theme.layout_dwindle    = image_path .. "/layouts/dwindlew.png"
 
-theme.awesome_icon      = "/usr/share/awesome/icons/awesome16.png"
+
+
+theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
+
+-- Define the icon theme for application icons. If not set then the icons 
+-- from /usr/share/icons and /usr/share/icons/hicolor will be used.
+theme.icon_theme = nil
 
 return theme
 -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
