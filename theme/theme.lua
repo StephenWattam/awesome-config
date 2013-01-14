@@ -7,6 +7,7 @@ wallpaper_path  = image_path .. "/wallpaper.jpg"
 
 theme = {}
 
+
 theme.font          = "ProggyCleanTT 12"
 
 theme.bg_normal     = "#111111"
@@ -19,6 +20,8 @@ theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
 theme.fg_urgent     = "#ffffff"
 theme.fg_minimize   = "#ffffff"
+theme.fg_mem        = "#56FF56"
+theme.fg_cpu        = "#FF5656"
 
 theme.border_width  = 1
 theme.border_normal = "#000000"

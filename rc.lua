@@ -45,6 +45,7 @@ beautiful.init("/home/extremetomato/.config/awesome/theme/theme.lua")
 terminal = "urxvtc"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
+text_cpumem = false -- use graphs or text for cpu, memory readouts
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -144,13 +145,27 @@ mytasklist.buttons = awful.util.table.join(
                                           end))
 
 
--- Create some widgets we want
+-- Create some widgets
+-- Text widgets
 mytextclock = awful.widget.textclock() --{ align = "right" })
-memwidget = wibox.widget.textbox() --({type="textbox"})
-cpuwidget = wibox.widget.textbox() --({type="textbox"})
-
-vicious.register(memwidget, vicious.widgets.mem, "  $1%, ", 13)
-vicious.register(cpuwidget, vicious.widgets.cpu, "$1%, ")
+if (text_cpumem) then
+    memwidget = wibox.widget.textbox() --({type="textbox"})
+    cpuwidget = wibox.widget.textbox() --({type="textbox"})
+    vicious.register(memwidget, vicious.widgets.mem, "  $1%, ", 13)
+    vicious.register(cpuwidget, vicious.widgets.cpu, "$1%, ")
+else
+    -- Graphs
+    cpuwidget = awful.widget.graph()
+    memwidget = awful.widget.graph()
+    cpuwidget:set_background_color(beautiful.bg_normal)
+    memwidget:set_background_color(beautiful.bg_normal)
+    cpuwidget:set_color(beautiful.fg_cpu)
+    memwidget:set_color(beautiful.fg_mem)
+    cpuwidget:set_width(50)
+    memwidget:set_width(50)
+    vicious.register(memwidget, vicious.widgets.mem, "$1", 1)
+    vicious.register(cpuwidget, vicious.widgets.cpu, "$1", 1)
+end
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -181,8 +196,8 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     right_layout:add(mylayoutbox[s])
-    right_layout:add(memwidget)
-    right_layout:add(cpuwidget)
+    if text_cpumem or s == 1 then right_layout:add(memwidget) end
+    if text_cpumem or s == 1 then right_layout:add(cpuwidget) end
     right_layout:add(mytextclock)
     if s == 1 then right_layout:add(wibox.widget.systray()) end
 
@@ -337,7 +352,6 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
-    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",
         function (c)
