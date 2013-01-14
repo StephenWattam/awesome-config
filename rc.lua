@@ -271,11 +271,12 @@ globalkeys = awful.util.table.join(
             if titlebar_clients[client.focus] then
                 --awful.titlebar.remove(client.focus)
                 titlebar_clients[client.focus] = nil
+                awful.titlebar(client.focus, {size = 0})
             else
                 --awful.titlebar.add(client.focus, { modkey = modkey })
                 titlebar_clients[client.focus] = true
+                awful.titlebar(client.focus)
             end
-            set_titlebar(client.focus)
         end
 	  
     -- awful.titlebar.add(c, { modkey = modkey })
@@ -446,8 +447,34 @@ awful.rules.rules = {
 
 set_titlebar = function(c)
 
-    local layout = wibox.layout.align.horizontal()
-    if (titlebar_clients[c] ~= nil) and (c.type == "normal" or c.type == "dialog") then
+
+end
+
+
+-- {{{ Signals
+-- Signal function to execute when a new client appears.
+client.connect_signal("manage", function (c, startup)
+    -- Enable sloppy focus
+    c:connect_signal("mouse::enter", function(c)
+        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            and awful.client.focus.filter(c) then
+            client.focus = c
+        end
+    end)
+
+    if not startup then
+        -- Set the windows at the slave,
+        -- i.e. put it at the end of others instead of setting it master.
+        -- awful.client.setslave(c)
+
+        -- Put windows in a smart way, only if they does not set an initial position.
+        if not c.size_hints.user_position and not c.size_hints.program_position then
+            awful.placement.no_overlap(c)
+            awful.placement.no_offscreen(c)
+        end
+    end
+
+    if (c.type == "normal" or c.type == "dialog") then
         -- Widgets that are aligned to the left
         local left_layout = wibox.layout.fixed.horizontal()
         left_layout:add(awful.titlebar.widget.iconwidget(c))
@@ -476,46 +503,13 @@ set_titlebar = function(c)
                 ))
 
         -- Now bring it all together
+        local layout = wibox.layout.align.horizontal()
         layout:set_left(left_layout)
         layout:set_right(right_layout)
         layout:set_middle(title)
 
-        awful.titlebar(c):set_widget(layout)
-
-    else
-    
-        awful.titlebar(c):set_widget(layout)
-        --awful.titlebar(c, { position = "left" } )
-
+        awful.titlebar(c, {size = 0}):set_widget(layout)
     end
-
-end
-
-
--- {{{ Signals
--- Signal function to execute when a new client appears.
-client.connect_signal("manage", function (c, startup)
-    -- Enable sloppy focus
-    c:connect_signal("mouse::enter", function(c)
-        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) then
-            client.focus = c
-        end
-    end)
-
-    if not startup then
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- awful.client.setslave(c)
-
-        -- Put windows in a smart way, only if they does not set an initial position.
-        if not c.size_hints.user_position and not c.size_hints.program_position then
-            awful.placement.no_overlap(c)
-            awful.placement.no_offscreen(c)
-        end
-    end
-
-    set_titlebar(c)
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
