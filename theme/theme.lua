@@ -2,7 +2,7 @@
 -- Default awesome theme --
 ---------------------------
 -- configure these
-image_path      = "/home/extremetomato/.config/awesome/theme"
+image_path      = "/home/wattams/.config/awesome/theme"
 wallpaper_path  = image_path .. "/wallpaper.jpg"
 
 theme = {}
@@ -10,7 +10,7 @@ theme = {}
 
 theme.font          = "ProggyCleanTT 12"
 
-theme.bg_normal     = "#111111"
+theme.bg_normal     = "#11111100"
 theme.bg_focus      = "#232d3c"
 theme.bg_urgent     = "#ff6600"
 theme.bg_minimize   = "#444444"
