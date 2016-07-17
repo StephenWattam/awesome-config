@@ -37,6 +37,7 @@ do
 end
 -- }}}
 
+
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/home/wattams/.config/awesome/theme/theme.lua")
