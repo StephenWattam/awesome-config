@@ -89,17 +89,6 @@ local function client_menu_toggle_fn()
 end
 -- }}}
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "hotkeys", function() return false, hotkeys_popup.show_help end},
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end}
-}
-
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -349,6 +338,8 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized = not c.maximized
+            c.maximized_horizontal = c.maximized
+            c.maximized_vertical = c.maximized
             c:raise()
         end ,
         {description = "maximize", group = "client"})
