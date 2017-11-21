@@ -342,7 +342,9 @@ clientkeys = awful.util.table.join(
             c.maximized_vertical = c.maximized
             c:raise()
         end ,
-        {description = "maximize", group = "client"})
+        {description = "maximize", group = "client"}),
+    awful.key({ modkey,           }, "w",      function (c) awful.titlebar.toggle(c)            end,
+              {description = "toggle titlebar", group = "client"})
 )
 
 -- Bind all key numbers to tags.
@@ -512,6 +514,7 @@ client.connect_signal("request::titlebars", function(c)
         },
         layout = wibox.layout.align.horizontal
     }
+    awful.titlebar.hide(c)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
